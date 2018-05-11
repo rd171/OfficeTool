@@ -46,3 +46,13 @@ long CExcel::GetWorkSheetCount()
 {
 	return m_pImp->GetWorkSheetCount();
 }
+
+void CExcel::SetRowAndCol(int nRow, int nCol)
+{
+	m_pImp->SetRowAndCol(nRow, nCol);
+}
+
+void CExcel::GetRowAndCol(int& nRow, int& nCol)
+{
+	m_pImp->GetRowAndCol(nRow, nCol);
+}
