@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OfficeToolDemo", "OfficeToolDemo\OfficeToolDemo.vcxproj", "{F027024B-3A93-44D6-BE71-0BEDF0D7F059}"
+	ProjectSection(ProjectDependencies) = postProject
+		{11F1F6BF-2D8B-490D-8E43-3BA8C965D4D5} = {11F1F6BF-2D8B-490D-8E43-3BA8C965D4D5}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OfficeTool", "..\OfficeTool\OfficeTool\OfficeTool.vcxproj", "{11F1F6BF-2D8B-490D-8E43-3BA8C965D4D5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F027024B-3A93-44D6-BE71-0BEDF0D7F059}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F027024B-3A93-44D6-BE71-0BEDF0D7F059}.Debug|Win32.Build.0 = Debug|Win32
+		{F027024B-3A93-44D6-BE71-0BEDF0D7F059}.Release|Win32.ActiveCfg = Release|Win32
+		{F027024B-3A93-44D6-BE71-0BEDF0D7F059}.Release|Win32.Build.0 = Release|Win32
+		{11F1F6BF-2D8B-490D-8E43-3BA8C965D4D5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{11F1F6BF-2D8B-490D-8E43-3BA8C965D4D5}.Debug|Win32.Build.0 = Debug|Win32
+		{11F1F6BF-2D8B-490D-8E43-3BA8C965D4D5}.Release|Win32.ActiveCfg = Release|Win32
+		{11F1F6BF-2D8B-490D-8E43-3BA8C965D4D5}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
