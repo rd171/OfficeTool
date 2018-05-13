@@ -19,6 +19,7 @@ public:
 
 	bool	AddWorkSheet(CString strName);
 	long	GetWorkSheetCount();
+	bool	SetWorkSheetName(long nSheetId, CString strName);
 
 private:
 	CExcelImp*	m_pImp;

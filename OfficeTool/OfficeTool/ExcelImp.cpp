@@ -25,10 +25,10 @@ bool CExcelImp::Open(bool bCreate, CString strPath)
 	{
 		m_App.SetScreenUpdating(FALSE);
 		m_App.SetDisplayAlerts(FALSE);
+		m_App.SetSheetsInNewWorkbook(long(1));
 		m_WorkBooks.AttachDispatch(m_App.GetWorkbooks(),TRUE);
 		m_WorkBooks.Add(COleVariant((long)DISP_E_PARAMNOTFOUND, VT_ERROR));
 		m_WorkSheets.AttachDispatch(m_App.GetWorksheets(),TRUE);
-		int nCount = m_WorkSheets.GetCount();
 		return true;
 	}
 	else
@@ -103,6 +103,15 @@ bool CExcelImp::AddWorkSheet(CString strName)
 long CExcelImp::GetWorkSheetCount()
 {
 	return m_WorkSheets.GetCount();
+}
+
+bool CExcelImp::SetWorkSheetName(long nSheetId, CString strName)
+{
+	if ( nSheetId < 1 || nSheetId > m_WorkSheets.GetCount() )
+		return false;
+	MS_EXCEL_2007::_Worksheet WorkSheet = m_WorkSheets.GetItem(_variant_t(nSheetId));
+	WorkSheet.SetName(strName);
+	return true;
 }
 
 void CExcelImp::SetRowAndCol(int nRow, int nCol)

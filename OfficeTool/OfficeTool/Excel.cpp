@@ -47,6 +47,11 @@ long CExcel::GetWorkSheetCount()
 	return m_pImp->GetWorkSheetCount();
 }
 
+bool CExcel::SetWorkSheetName(long nSheetId, CString strName)
+{
+	return m_pImp->SetWorkSheetName(nSheetId, strName);
+}
+
 void CExcel::SetRowAndCol(int nRow, int nCol)
 {
 	m_pImp->SetRowAndCol(nRow, nCol);

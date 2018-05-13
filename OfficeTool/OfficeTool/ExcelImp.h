@@ -20,6 +20,7 @@ public:
 
 	bool	AddWorkSheet(CString strName);
 	long	GetWorkSheetCount();
+	bool	SetWorkSheetName(long nSheetId, CString strName);
 
 private:
 	void		Paste(long nSheetId, CString& strText);
