@@ -161,13 +161,12 @@ void COfficeToolDemoDlg::OnBnClickedBtOutExcel()
 	if ( !mExcel.Open(true, _T("d:\\OfficeToolDemo.xls")) )
 		return;
 
-	mExcel.SetWorkSheetName(1, _T("工作表1"));
-	//mExcel.AddWorkSheet(_T("工作表2"));
-	//mExcel.SetRowAndCol(2, 2);
-	//mExcel.SetRangeText(1, 1, 1, _T("11"));
-	//mExcel.SetRangeText(1, 1, 2, _T("12"));
-	//mExcel.SetRangeText(1, 2, 1, _T("21"));
-	//mExcel.SetRangeText(1, 2, 2, _T("22"));
+	//mExcel.SetWorkSheetName(1, _T("工作表1"));
+	mExcel.AddWorkSheet(_T("工作表1"), 2, 2);
+	mExcel.SetRangeText(1, 1, 1, _T("11"));
+	mExcel.SetRangeText(1, 1, 2, _T("12"));
+	mExcel.SetRangeText(1, 2, 1, _T("21"));
+	mExcel.SetRangeText(1, 2, 2, _T("22"));
 	mExcel.Save();
 	mExcel.Close();
 	AfxMessageBox(_T("Finished!"));

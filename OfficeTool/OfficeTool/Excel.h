@@ -14,10 +14,7 @@ public:
 	void	SetRangeText(int nSheetId, int nRow, int nCol, CString strText);
 	CString	GetRangeText(int nSheetId, int nRow, int nCol);
 
-	void	SetRowAndCol(int nRow, int nCol);
-	void	GetRowAndCol(int& nRow, int& nCol);
-
-	bool	AddWorkSheet(CString strName);
+	bool	AddWorkSheet(CString strName, int nRow, int nCol);
 	long	GetWorkSheetCount();
 	bool	SetWorkSheetName(long nSheetId, CString strName);
 

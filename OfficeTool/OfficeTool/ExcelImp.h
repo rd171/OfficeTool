@@ -2,6 +2,23 @@
 #include "excel_2007.h"
 using namespace MS_EXCEL_2007;
 
+
+class CSheetData
+{
+public:
+	CSheetData(int nRow, int nCol);
+	~CSheetData();
+
+	bool	SetRangeText(int nRow, int nCol, CString strText);
+	CString	GetRangeText(int nRow, int nCol);
+	CString GetAllText();
+
+private:
+	int				m_nRow;		// Sheet行数(索引从1开始)
+	int				m_nCol;		// Sheet列数(索引从1开始)
+	CStringArray*	m_pRowText;	// 行数据
+};
+
 class CExcelImp
 {
 public:
@@ -12,13 +29,10 @@ public:
 	void	Close();
 	bool	Save();
 
-	void	SetRangeText(int nSheetId, int nRow, int nCol, CString strText);
+	BOOL	SetRangeText(int nSheetId, int nRow, int nCol, CString strText);
 	CString	GetRangeText(int nSheetId, int nRow, int nCol);
 
-	void	SetRowAndCol(int nRow, int nCol);
-	void	GetRowAndCol(int& nRow, int& nCol);
-
-	bool	AddWorkSheet(CString strName);
+	bool	AddWorkSheet(CString strName, int nRow, int nCol);
 	long	GetWorkSheetCount();
 	bool	SetWorkSheetName(long nSheetId, CString strName);
 
@@ -31,8 +45,7 @@ private:
 	MS_EXCEL_2007::Worksheets	m_WorkSheets;
 	MS_EXCEL_2007::Workbooks	m_WorkBooks;
 	CString						m_strPath;
-	int							m_nRow;
-	int							m_nCol;
-	CStringArray*				m_pCol;
+
+	CPtrList					m_listSheetData;
 };
 

@@ -2,14 +2,61 @@
 #include "ExcelImp.h"
 #include<comdef.h>
 
+CSheetData::CSheetData(int nRow, int nCol)
+{
+	m_nRow		= nRow;
+	m_nCol		= nCol;
+	m_pRowText	= new CStringArray[nRow];
+	for ( int i = 0; i < nRow; i++ )
+	{
+		for ( int j = 0; j < nCol; j++ )
+		{
+			CString strRange = _T("\t");
+			m_pRowText[i].Add(strRange);
+		}
+	}
+}
+
+CSheetData::~CSheetData()
+{
+	delete[] m_pRowText;
+}
+
+bool CSheetData::SetRangeText(int nRow, int nCol, CString strText)
+{
+	if ( nRow > m_nRow || nCol > m_nCol )
+		return false;
+	strText	+= _T("\t");
+	m_pRowText[nRow-1].SetAt(nCol-1, strText);
+	return true;
+}
+
+CString	CSheetData::GetRangeText(int nRow, int nCol)
+{
+	if ( nRow > m_nRow || nCol > m_nCol )
+		return _T("");
+	CString strRangeText = m_pRowText[nRow-1].GetAt(nCol-1);
+	strRangeText	= strRangeText.Mid(0, strRangeText.GetLength() -1);
+	return strRangeText;
+}
+
+CString CSheetData::GetAllText()
+{
+	CString strText	= _T("");
+	for ( int i = 0; i < m_nRow; i++ )
+	{
+		for ( int j = 0; j < m_nCol; j++ )
+			strText += m_pRowText[i].GetAt(j);
+		strText	+= _T("\r\n");
+	}
+	return strText;
+}
+
 CExcelImp::CExcelImp(void)
 {
 	CoInitialize(NULL);
 	m_App.CreateDispatch(_T("Excel.Application"));
 	m_strPath		= _T("");
-	m_nRow			= 0;
-	m_nCol			= 0;
-	m_pCol			= NULL;
 }
 
 CExcelImp::~CExcelImp(void)
@@ -61,14 +108,13 @@ void CExcelImp::Close()
 
 bool CExcelImp::Save()
 {
-	CString strData;
-	for ( int i = 0; i < m_nRow; i++ )
+	for ( int i = 0; i < m_listSheetData.GetCount(); i++ )
 	{
-		for ( int j = 0; j < m_nCol; j++ )
-			strData += m_pCol[i].GetAt(j);
-		strData	+= _T("\r\n");
+		MS_EXCEL_2007::_Worksheet WorkSheet = m_WorkSheets.GetItem(_variant_t(long(i+1)));
+		CSheetData* pSheet = (CSheetData*)m_listSheetData.GetAt(m_listSheetData.FindIndex(i));
+		CString strData	= pSheet->GetAllText();
+		Paste(1, strData);
 	}
-	Paste(1, strData);
 
 	int nCount = m_WorkBooks.GetCount();
 	for ( int i = 1; i <= nCount; i++ )
@@ -81,11 +127,12 @@ bool CExcelImp::Save()
 	return true;
 }
 
-void CExcelImp::SetRangeText(int nSheetId, int nRow, int nCol, CString strText)
+BOOL CExcelImp::SetRangeText(int nSheetId, int nRow, int nCol, CString strText)
 {
-	if ( nRow > m_nRow || nCol > m_nCol )
-		return;
-	m_pCol[nRow-1].SetAt(m_nCol-1, strText);
+	if ( nSheetId > m_listSheetData.GetCount() )
+		return FALSE;
+	CSheetData* pSheet = (CSheetData*)m_listSheetData.GetAt(m_listSheetData.FindIndex(nSheetId-1));
+	pSheet->SetRangeText(nRow, nCol, strText);
 }
 
 CString	CExcelImp::GetRangeText(int nSheetId, int nRow, int nCol)
@@ -93,11 +140,21 @@ CString	CExcelImp::GetRangeText(int nSheetId, int nRow, int nCol)
 	return _T("");
 }
 
-bool CExcelImp::AddWorkSheet(CString strName)
+bool CExcelImp::AddWorkSheet(CString strName, int nRow, int nCol)
 {
-	MS_EXCEL_2007::_Worksheet mWorkSheet = m_WorkSheets.Add(vtMissing,_variant_t(m_WorkSheets.GetItem(COleVariant(m_WorkSheets.GetCount()))),COleVariant(long(1)),vtMissing);
-	mWorkSheet.SetName(strName);
-	return m_WorkSheets.Add(vtMissing,vtMissing,_variant_t((long)1),vtMissing);;
+	if ( 0 == m_listSheetData.GetCount() )
+	{
+		MS_EXCEL_2007::_Worksheet WorkSheet = m_WorkSheets.GetItem(_variant_t(((long)1)));
+		WorkSheet.SetName(strName);
+	}
+	else
+	{
+		MS_EXCEL_2007::_Worksheet mWorkSheet = m_WorkSheets.Add(vtMissing,_variant_t(m_WorkSheets.GetItem(COleVariant(m_WorkSheets.GetCount()))),COleVariant(long(1)),vtMissing);
+		mWorkSheet.SetName(strName);
+	}
+	CSheetData* pSheet	= new CSheetData(nRow, nCol);
+	m_listSheetData.AddTail(pSheet);
+	return true;
 }
 
 long CExcelImp::GetWorkSheetCount()
@@ -112,28 +169,6 @@ bool CExcelImp::SetWorkSheetName(long nSheetId, CString strName)
 	MS_EXCEL_2007::_Worksheet WorkSheet = m_WorkSheets.GetItem(_variant_t(nSheetId));
 	WorkSheet.SetName(strName);
 	return true;
-}
-
-void CExcelImp::SetRowAndCol(int nRow, int nCol)
-{
-	if ( NULL != m_pCol )
-		return;
-	m_nRow		= nRow;
-	m_nCol		= nCol;
-	m_pCol		= new CStringArray[m_nRow];
-	for ( int i = 0; i < m_nRow; i++ )
-	{
-		for ( int j = 0; j < m_nCol; j++ )
-		{
-			CString strTemp =  _T("\t");
-			m_pCol[i].Add(strTemp);
-		}
-	}
-}
-
-void CExcelImp::GetRowAndCol(int& nRow, int& nCol)
-{
-
 }
 
 CString CExcelImp::Cell(long nItem,long nCol)

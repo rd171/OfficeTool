@@ -37,9 +37,9 @@ CString	CExcel::GetRangeText(int nSheetId, int nRow, int nCol)
 	return m_pImp->GetRangeText(nSheetId, nRow, nCol);
 }
 
-bool CExcel::AddWorkSheet(CString strName)
+bool CExcel::AddWorkSheet(CString strName, int nRow, int nCol)
 {
-	return m_pImp->AddWorkSheet(strName);
+	return m_pImp->AddWorkSheet(strName, nRow, nCol);
 }
 
 long CExcel::GetWorkSheetCount()
@@ -50,14 +50,4 @@ long CExcel::GetWorkSheetCount()
 bool CExcel::SetWorkSheetName(long nSheetId, CString strName)
 {
 	return m_pImp->SetWorkSheetName(nSheetId, strName);
-}
-
-void CExcel::SetRowAndCol(int nRow, int nCol)
-{
-	m_pImp->SetRowAndCol(nRow, nCol);
-}
-
-void CExcel::GetRowAndCol(int& nRow, int& nCol)
-{
-	m_pImp->GetRowAndCol(nRow, nCol);
 }
