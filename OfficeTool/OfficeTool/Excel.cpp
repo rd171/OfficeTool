@@ -51,3 +51,8 @@ bool CExcel::SetWorkSheetName(long nSheetId, CString strName)
 {
 	return m_pImp->SetWorkSheetName(nSheetId, strName);
 }
+
+void CExcel::SetRangeStyle(int nSheetId, int nRow1, int nCol1, int nRow2, int nCol2, RangeStyle style)
+{
+	m_pImp->SetRangeStyle(nSheetId, nRow1, nCol1, nRow2, nCol2, (CExcelImp::RangeStyle)style);
+}
