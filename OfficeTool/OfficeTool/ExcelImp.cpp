@@ -110,10 +110,9 @@ bool CExcelImp::Save()
 {
 	for ( int i = 0; i < m_listSheetData.GetCount(); i++ )
 	{
-		MS_EXCEL_2007::_Worksheet WorkSheet = m_WorkSheets.GetItem(_variant_t(long(i+1)));
 		CSheetData* pSheet = (CSheetData*)m_listSheetData.GetAt(m_listSheetData.FindIndex(i));
 		CString strData	= pSheet->GetAllText();
-		Paste(1, strData);
+		Paste(i+1, strData);
 	}
 
 	int nCount = m_WorkBooks.GetCount();
